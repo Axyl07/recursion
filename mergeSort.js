@@ -1,45 +1,65 @@
 console.log("merge");
 
-  function mergeSort(array, low = 0, high = array.length - 1) {
-    if (array.length < 2) {
-      return array;
-    }
-    else {
-      let mid = parseInt((low + high) / 2);
-      let left = array.slice(low, mid + 1);
-      let right = array.slice(mid + 1, high + 1);
-      let leftSubArray = mergeSort(left, low, mid);
-      console.log(leftSubArray);
-      let rightSubArray = mergeSort(right, mid + 1, high);
-      console.log(rightSubArray);
-      // (leftSubArray, rightSubArray);
-      // mergeSort(array, low, high,outputArray);
-      return merge(leftSubArray,rightSubArray);
-      
-    }
-  }
 
-  console.log("sorted: " + mergeSort([4,3,2,1]));
-  function merge(leftArray, rightArray) {
-    let m = leftArray.length;
-    let n = rightArray.length;
-    let outputArray = [];
-    let i = 0,
-      j = 0,
-      k = 0;
-    while (i < m && j < n) {
-      if (leftArray[i] < rightArray[j]) {
-        outputArray[k++] = leftArray[i++];
+
+function mergeSort(array) {
+  if (array.length<2) {
+    return array;
+  }
+  else {
+    if (array.length%2===0) {
+      let mid = array.length / 2 - 1;
+      let leftArr = array.slice(0, mid+1);
+      let rightArr = array.slice(mid + 1, array.length);
+      if (leftArr.length<2 && rightArr.length<2) {
+        return merge(leftArr, rightArr);
       } else {
-        outputArray[k++] = rightArray[j++];
+        let leftPart = mergeSort(leftArr);
+        let rightPart = mergeSort(rightArr);
+        return merge(leftPart, rightPart);
+      }
+    } else {
+      let mid = array.length / 2 ;
+      let leftArr = array.slice(0, mid+1);
+      let rightArr = array.slice(mid + 1, array.length);
+      if (leftArr.length<2 && rightArr.length<2) {
+        return merge(leftArr, rightArr);
+      } else {
+        let leftPart = mergeSort(leftArr);
+        let rightPart = mergeSort(rightArr);
+        return merge(leftPart, rightPart);
       }
     }
-    while (i < m) {
+  }
+}
+console.log(mergeSort([1,0,5,-3,12,562,1,-7,5]));
+
+// console.log("sorted: " + mergeSort([8,4,6,5,3,2,1,0]));
+function merge(leftArray, rightArray) {
+  let m = leftArray.length;
+  let n = rightArray.length;
+  let outputArray = [];
+  let i = 0,
+    j = 0,
+    k = 0;
+  while (i < m && j < n) {
+    if (leftArray[i] < rightArray[j]) {
       outputArray[k++] = leftArray[i++];
-    }
-    while (j < n) {
+    } else {
       outputArray[k++] = rightArray[j++];
     }
-    return outputArray;
   }
 
+  for (; i < m; i++) {
+    outputArray[k++] = leftArray[i];
+  }
+
+  for (; j < n; j++) {
+    outputArray[k++] = rightArray[j];
+  }
+  return outputArray;
+}
+// console.log(merge([3, 5, 6, 7, 8], [1, 2, 3, 4, 5]));
+// let array = [6, 5, 4, 3, 2, 1, 0]
+// console.log(array.length);
+// console.log(parseInt((array.length) / 2));
